@@ -251,4 +251,103 @@ The application integrates email functionality and PDF generation to deliver wea
 **Caching**
 
 Weather data caching is provided through the application's utility layer to reduce unnecessary repeated operations.
+## 📡 API Documentation
+
+The application exposes RESTful APIs for weather management, client management, international weather information, audit reports, and PDF weather-report generation.
+
+### 🌦️ Weather APIs
+
+Base path: `/weather`
+
+| Method   | Endpoint         | Description                             |
+| -------- | ---------------- | --------------------------------------- |
+| `POST`   | `/weather`       | Create and save weather information     |
+| `GET`    | `/weather/{id}`  | Get weather information by ID           |
+| `GET`    | `/weather`       | Get all weather reports                 |
+| `PUT`    | `/weather/{id}`  | Update weather information              |
+| `DELETE` | `/weather/{id}`  | Delete a weather report by ID           |
+| `GET`    | `/weather/page`  | Get paginated weather reports           |
+| `GET`    | `/weather/count` | Get the total number of weather reports |
+
+The paginated endpoint accepts `pageNumber` and `pageSize` query parameters. The defaults are `pageNumber=0` and `pageSize=25`.
+
+---
+
+### 👤 Client APIs
+
+Base path: `/client`
+
+| Method   | Endpoint                       | Description                            |
+| -------- | ------------------------------ | -------------------------------------- |
+| `GET`    | `/client/subscription-types`   | Get all available subscription types   |
+| `POST`   | `/client/register`             | Start client registration and send OTP |
+| `POST`   | `/client/verify-otp`           | Verify the OTP received by email       |
+| `DELETE` | `/client/{email}`              | Delete a client                        |
+| `GET`    | `/client`                      | Get clients based on active status     |
+| `PUT`    | `/client/{email}`              | Update client information              |
+| `PATCH`  | `/client/{email}/subscription` | Update client subscription             |
+| `GET`    | `/client/{email}`              | Get client information by email        |
+| `GET`    | `/client/count/{isActive}`     | Get client count by active status      |
+| `PATCH`  | `/client/{email}/status`       | Update client active status            |
+
+The client registration flow uses `ClientCreationDto`, while client updates use `ClientUpdateRequestDto`. OTP verification accepts `email` and `otp` as request parameters.
+
+---
+
+### 🌍 International Weather APIs
+
+Base path: `/global`
+
+| Method | Endpoint         | Description                                                    |
+| ------ | ---------------- | -------------------------------------------------------------- |
+| `GET`  | `/global/{city}` | Get international weather information by city                  |
+| `GET`  | `/global`        | Get international weather information for all supported cities |
+
+The international weather endpoints are backed by the `InternationalWeatherService`.
+
+---
+
+### 📝 Audit APIs
+
+Base path: `/audit`
+
+| Method | Endpoint        | Description       |
+| ------ | --------------- | ----------------- |
+| `GET`  | `/audit/report` | Get audit reports |
+
+The audit report endpoint supports pagination through:
+
+```text
+pageNumber
+pageSize
+```
+
+Default values:
+
+```text
+pageNumber = 0
+pageSize = 10
+```
+
+---
+
+### 📄 PDF Weather Report API
+
+Base path: `/weather-report`
+
+| Method | Endpoint                   | Description                            |
+| ------ | -------------------------- | -------------------------------------- |
+| `GET`  | `/weather-report/download` | Generate/download a PDF weather report |
+
+The endpoint accepts the weather report `id` as a request parameter and generates a PDF response.
+
+### 📖 Swagger API Documentation
+
+The project includes **Springdoc OpenAPI** for API documentation and testing.
+
+After starting the application, Swagger UI can be accessed at:
+
+```text
+http://localhost:8080/swagger-ui/index.html
+```
 
